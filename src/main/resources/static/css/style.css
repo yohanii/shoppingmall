@@ -1,0 +1,111 @@
+:root {
+    /* color */
+    --color-black: #3f454d;
+    --color-white: #ffffff;
+    --color-blue: #3b88c3;
+    --color-yellow: #fbbe28;
+    --color-pink: #fd7f84;
+    --color-light-grey: #dfdfdf;
+    --color-light-brown: rgba(159, 86, 86, 0.62);
+
+    --logo-size: 150px;
+    --button-font-size: 30px;
+    --padding-size: 10px;
+    --margin-size: 10px;
+    --button-size: 80px;
+    --item-size: 50px;
+    --item-font-size: 20px;
+    --items-width: 500px;
+}
+
+body {
+    background-color: goldenrod;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+}
+
+div {
+    padding: var(--padding-size);
+}
+
+.logo-image {
+    width : var(--logo-size);
+    height : var(--logo-size);
+}
+
+.buttons {
+    display: flex;
+    align-items: center;
+}
+
+.tshirt-btn,
+.pants-btn,
+.skirt-btn {
+    width: var(--button-size);
+    height: var(--button-size);
+}
+
+.btn {
+    background-color: transparent;
+    border: none;
+    margin-right: var(--margin-size);
+}
+
+.color {
+    font-size: var(--button-font-size);
+    padding: var(--padding-size);
+    margin-right: calc(var(--margin-size)*2);
+    border-radius: 13px;
+}
+
+.logo,
+.btn {
+    transition: transform 300ms ease;
+}
+
+.logo:hover,
+.btn:hover{
+    transform: scale(1.1);
+    animation-duration: 300ms;
+}
+
+.blue {
+    background-color: var(--color-blue);
+}
+
+.yellow {
+    background-color: var(--color-yellow);
+}
+
+.pink {
+    background-color: var(--color-pink);
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    list-style: none;
+}
+
+.item-img {
+    width : var(--item-size);
+    height : var(--item-size);
+    margin: var(--margin-size);
+}
+
+.item-description {
+    font-size: var(--item-font-size);
+}
+
+.items-ul {
+    padding: 0px;
+}
+
+.items {
+    width: var(--items-width);
+    overflow-y: scroll;
+    background-color: var(--color-light-brown);
+}
