@@ -24,6 +24,7 @@ class JdbcShoppingmallRepositoryTest {
 
     @Test
     void save() {
+        //given
         Cloth cloth = new Cloth();
         cloth.setType("tshirt");
         cloth.setColor("blue");
@@ -31,8 +32,10 @@ class JdbcShoppingmallRepositoryTest {
         cloth.setSize("small");
         cloth.setImage("source/blue_t.png");
 
+        //when
         repository.save(cloth);
 
+        //then
         Cloth result = repository.findById(cloth.getId()).get();
         assertThat(cloth.getType()).isEqualTo(result.getType());
         assertThat(cloth.getColor()).isEqualTo(result.getColor());
