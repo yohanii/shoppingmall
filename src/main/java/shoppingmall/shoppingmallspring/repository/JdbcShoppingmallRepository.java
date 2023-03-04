@@ -112,14 +112,15 @@ public class JdbcShoppingmallRepository implements ShoppingmallRepository{
     }
 
     @Override
-    public Optional<Cloth> deleteByTypeColor(String type, String color) {
+    public Optional<Cloth> deleteOneByTypeColor(String type, String color) {
         //못 찾으면 null 반환
         String find_sql = "select * from clothes where type = ? and color = ?";
-        String delete_sql = "delete from clothes where type = ? and color = ?";
+        String delete_sql = "delete from clothes where type = ? and color = ? and id = ?";
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         Cloth result = new Cloth();
+        Long id_save;
 
         try {
             conn = getConnection();
@@ -130,7 +131,8 @@ public class JdbcShoppingmallRepository implements ShoppingmallRepository{
             rs = pstmt.executeQuery();
 
             if (rs.next()) {
-                result.setId(rs.getLong("id"));
+                id_save = rs.getLong("id");
+                result.setId(id_save);
                 result.setType(rs.getString("type"));
                 result.setColor(rs.getString("color"));
                 result.setGender(rs.getString("gender"));
@@ -143,6 +145,7 @@ public class JdbcShoppingmallRepository implements ShoppingmallRepository{
             pstmt = conn.prepareStatement(delete_sql);
             pstmt.setString(1, type);
             pstmt.setString(2, color);
+            pstmt.setLong(3, id_save);
             pstmt.executeUpdate();
         } catch (Exception e){
             throw new IllegalStateException(e);
@@ -151,6 +154,33 @@ public class JdbcShoppingmallRepository implements ShoppingmallRepository{
         }
 
         return Optional.ofNullable(result);
+    }
+
+    @Override
+    public Long getRowLength(){
+        String sql = "select count(*) from clothes";
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        Long result = null;
+
+        try {
+            conn = getConnection();
+            pstmt = conn.prepareStatement(sql);
+            rs = pstmt.executeQuery();
+
+            if(rs.next()) {
+                result = rs.getLong(1);
+            } else {
+                throw new SQLException("id 조회 실패");
+            }
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        } finally {
+            close(conn, pstmt, rs);
+        }
+
+        return result;
     }
 
     private Connection getConnection() {
