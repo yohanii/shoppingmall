@@ -1,9 +1,13 @@
 package shoppingmall.shoppingmallspring.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import shoppingmall.shoppingmallspring.repository.JdbcShoppingmallRepository;
 import shoppingmall.shoppingmallspring.repository.ShoppingmallRepository;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class ShoppingmallService {
@@ -19,22 +23,17 @@ public class ShoppingmallService {
      * 옷 전체 조회 - DTO를 json으로 변환해서 리턴할 것.
      */
     public String getClothesJson() {
-        return "{\n" +
-                "  \"items\": [\n" +
-                "    {\"type\": \"tshirt\",\n" +
-                "      \"gender\": \"female\",\n" +
-                "      \"size\": \"large\",\n" +
-                "      \"color\": \"blue\",\n" +
-                "      \"image\": \"source/blue_t.png\"\n" +
-                "    },\n" +
-                "    {\"type\": \"skirt\",\n" +
-                "      \"gender\": \"female\",\n" +
-                "      \"size\": \"large\",\n" +
-                "      \"color\": \"yellow\",\n" +
-                "      \"image\": \"source/yellow_s.png\"\n" +
-                "    }\n" +
-                "  ]\n" +
-                "}";
+        String json = null;
+        Map<String, Object> data = new HashMap<>();
+        data.put("items", repository.findAll());
+
+        try {
+            json = new ObjectMapper().writeValueAsString(data);
+        } catch (Exception e) {
+            e.getMessage();
+        }
+
+        return json;
     }
 
     /**
