@@ -56,8 +56,13 @@ class JdbcShoppingmallRepositoryTest {
         repository.save(cloth2);
 
         //then
-        assertThat(cloth1).isEqualTo(repository.findById(cloth1.getId()).get());
-        assertThat(cloth2).isEqualTo(repository.findById(cloth2.getId()).get());
+        Cloth result1 = repository.findById(cloth1.getId()).get();
+        assertThat(cloth1.getType()).isEqualTo(result1.getType());
+        assertThat(cloth1.getColor()).isEqualTo(result1.getColor());
+
+        Cloth result2 = repository.findById(cloth2.getId()).get();
+        assertThat(cloth2.getType()).isEqualTo(result2.getType());
+        assertThat(cloth2.getColor()).isEqualTo(result2.getColor());
     }
 
     @Test
@@ -77,8 +82,11 @@ class JdbcShoppingmallRepositoryTest {
 
         //then
         List<Cloth> list = repository.findAll();
-        assertThat(cloth1).isEqualTo(list.get(0));
-        assertThat(cloth2).isEqualTo(list.get(1));
+        assertThat(cloth1.getType()).isEqualTo(list.get(0).getType());
+        assertThat(cloth1.getColor()).isEqualTo(list.get(0).getColor());
+
+        assertThat(cloth2.getType()).isEqualTo(list.get(1).getType());
+        assertThat(cloth2.getColor()).isEqualTo(list.get(1).getColor());
     }
 
     @Test
@@ -99,7 +107,9 @@ class JdbcShoppingmallRepositoryTest {
         //then
         Long id_save = cloth1.getId();
         Optional<Cloth> result1 = repository.deleteByTypeColor(cloth1.getType(), cloth1.getColor());
-        assertThat(result1.get()).isEqualTo(cloth1);
+        assertThat(result1.get().getType()).isEqualTo(cloth1.getType());
+        assertThat(result1.get().getColor()).isEqualTo(cloth1.getColor());
+
         assertThat(repository.findById(id_save).get()).isEqualTo(null);
 
         Optional<Cloth> result2 = repository.deleteByTypeColor(cloth1.getType(), cloth1.getColor());
