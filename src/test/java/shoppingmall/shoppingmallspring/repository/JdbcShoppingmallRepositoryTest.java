@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import shoppingmall.shoppingmallspring.domain.Cloth;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -110,9 +111,15 @@ class JdbcShoppingmallRepositoryTest {
         assertThat(result1.get().getType()).isEqualTo(cloth1.getType());
         assertThat(result1.get().getColor()).isEqualTo(cloth1.getColor());
 
-        assertThat(repository.findById(id_save).get()).isEqualTo(null);
+        //assertThat(repository.findById(id_save).get()).isEqualTo(null);
+        IllegalStateException e = assertThrows(IllegalStateException.class,
+                () -> repository.findById(id_save)); //예외가 발생해야 한다.
+        assertThat(e.getMessage()).isEqualTo("java.sql.SQLException: id로 옷 조회 실패");
 
         Optional<Cloth> result2 = repository.deleteByTypeColor(cloth1.getType(), cloth1.getColor());
-        assertThat(result2.get()).isEqualTo(null);
+        //assertThat(result2.get()).isEqualTo(null);
+        NoSuchElementException e2 = assertThrows(NoSuchElementException.class,
+                () -> result2.get());
+        assertThat(e2.getMessage()).isEqualTo("No value present");
     }
 }

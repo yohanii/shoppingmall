@@ -6,6 +6,7 @@ import shoppingmall.shoppingmallspring.domain.Cloth;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -81,12 +82,75 @@ public class JdbcShoppingmallRepository implements ShoppingmallRepository{
 
     @Override
     public List<Cloth> findAll() {
-        return null;
+        String sql = "select * from clothes";
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        List<Cloth> list = new ArrayList<>();
+
+        try{
+            conn = getConnection();
+            pstmt = conn.prepareStatement(sql);
+            rs = pstmt.executeQuery();
+
+            while(rs.next()){
+                Cloth cloth = new Cloth();
+                cloth.setId(rs.getLong("id"));
+                cloth.setType(rs.getString("type"));
+                cloth.setColor(rs.getString("color"));
+                cloth.setGender(rs.getString("gender"));
+                cloth.setSize(rs.getString("size"));
+                cloth.setImage(rs.getString("image"));
+                list.add(cloth);
+            }
+        } catch (Exception e){
+            throw new IllegalStateException(e);
+        } finally {
+            close(conn, pstmt, rs);
+        }
+        return list;
     }
 
     @Override
     public Optional<Cloth> deleteByTypeColor(String type, String color) {
-        return Optional.empty();
+        //못 찾으면 null 반환
+        String find_sql = "select * from clothes where type = ? and color = ?";
+        String delete_sql = "delete from clothes where type = ? and color = ?";
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        Cloth result = new Cloth();
+
+        try {
+            conn = getConnection();
+
+            pstmt = conn.prepareStatement(find_sql);
+            pstmt.setString(1, type);
+            pstmt.setString(2, color);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                result.setId(rs.getLong("id"));
+                result.setType(rs.getString("type"));
+                result.setColor(rs.getString("color"));
+                result.setGender(rs.getString("gender"));
+                result.setSize(rs.getString("size"));
+                result.setImage(rs.getString("image"));
+            } else {
+                return Optional.empty();
+            }
+
+            pstmt = conn.prepareStatement(delete_sql);
+            pstmt.setString(1, type);
+            pstmt.setString(2, color);
+            pstmt.executeUpdate();
+        } catch (Exception e){
+            throw new IllegalStateException(e);
+        } finally {
+            close(conn, pstmt, rs);
+        }
+
+        return Optional.ofNullable(result);
     }
 
     private Connection getConnection() {
