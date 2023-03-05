@@ -1,14 +1,36 @@
 'use strict'
 
+
+function ajax(){
+    let data_save = "";
+
+    $.ajax({
+        url: "/main",
+        type: "POST",
+        async:false,
+        success : function(data){
+            data_save = data;
+        },
+        error : function(){
+            alert("에러")
+        }
+    });
+
+    return data_save;
+}
+
 function loadData() {
-    return fetch('data/data.json')
-        .then((response) => response.json())
-        .then(json => json.items);
+    let str = ajax();
+
+    // return fetch("data/data.json")
+    //    .then((response) => response.json())
+    //     .then(json => json.items);
+    return JSON.parse(str)["items"];
+
 }
 
 function addHTML(items){
     const container = document.querySelector('.items-ul');
-
     container.innerHTML = items.map(item => createHTMLString(item)).join('');
 }
 
@@ -42,10 +64,17 @@ function setEventListeners(items) {
     buttons.addEventListener('click', event => loadFilteredData(event, items));
 }
 
-loadData().then(items => {
+// loadData().then(items => {
+//     addHTML(items);
+//     setEventListeners(items);
+// });
+
+let items = loadData();
+
+window.onload = function () {
     addHTML(items);
     setEventListeners(items);
-});
+}
 
 
 
