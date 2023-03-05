@@ -18,5 +18,5 @@ ajax는 형식에 맞게 써주면 된다.
 `aysnc : false`를 써주어 문제를 해결함.
 
 기존에는 fetch로 값을 받아와서, Promise에 담아 다루는 형식이었는데,
-string을 직접 가져오는 형태로 바뀌어서 JSON.parse()를 사용하였고,
+string을 직접 가져오는 형태로 바뀌어서 `JSON.parse()`를 사용하였고,
 return 값이 Object 형식이기 때문에, 그에 맞게 추가적인 코드를 수정했음.
