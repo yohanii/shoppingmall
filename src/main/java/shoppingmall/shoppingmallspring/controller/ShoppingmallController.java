@@ -30,9 +30,15 @@ public class ShoppingmallController {
 
     @ResponseBody
     @PostMapping("main")
-    public String main_request(Model model){
+    public String mainRequest(Model model){
         String json = service.getClothesJson();
 
         return json;
     }
+
+    @GetMapping("main/add_form")
+    public String addForm(Model model){
+        return "shoppingmall/add_cloth";
+    }
+
 }

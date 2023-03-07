@@ -3,6 +3,7 @@ package shoppingmall.shoppingmallspring.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import shoppingmall.shoppingmallspring.domain.Cloth;
 import shoppingmall.shoppingmallspring.repository.JdbcShoppingmallRepository;
 import shoppingmall.shoppingmallspring.repository.ShoppingmallRepository;
 
@@ -39,6 +40,9 @@ public class ShoppingmallService {
     /**
      * 옷 추가
      */
+    public Long addCloth(Cloth cloth) {
+        return repository.save(cloth).getId();
+    }
 
     /**
      * 전체 개수 조회

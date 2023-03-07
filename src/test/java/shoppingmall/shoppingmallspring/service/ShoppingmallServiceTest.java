@@ -58,4 +58,39 @@ class ShoppingmallServiceTest {
         assertThat(result2.get("type")).isEqualTo("skirt");
         assertThat(result2.get("color")).isEqualTo("yellow");
     }
+
+    @Test
+    void addCloth() {
+        //저장 잘 되었는지 확인
+
+        //given
+        Cloth cloth1 = new Cloth();
+        cloth1.setType("tshirt");
+        cloth1.setColor("blue");
+        cloth1.setGender("male");
+        cloth1.setSize("small");
+        cloth1.setImage("source/blue_t.png");
+
+        //when
+        repository.save(cloth1);
+
+        //then
+        Long save_id = service.addCloth(cloth1);
+        Cloth result = repository.findById(save_id).get();
+        assertThat(result.getId()).isEqualTo(cloth1.getId());
+        assertThat(result.getType()).isEqualTo(cloth1.getType());
+        assertThat(result.getColor()).isEqualTo(cloth1.getColor());
+        assertThat(result.getGender()).isEqualTo(cloth1.getGender());
+        assertThat(result.getSize()).isEqualTo(cloth1.getSize());
+        assertThat(result.getImage()).isEqualTo(cloth1.getImage());
+    }
+
+    @Test
+    void addClothValidation() {
+        //이상한 데이터 거르기 -> validator implement해서 구현해보기
+
+        //given
+        //when
+        //then
+    }
 }
