@@ -241,4 +241,43 @@ public class JdbcShoppingmallRepository implements ShoppingmallRepository{
     private void close(Connection conn) throws SQLException {
         DataSourceUtils.releaseConnection(conn, dataSource);
     }
+
+    @Override
+    public List<Integer> getCounts() {
+        String sql =
+                "select " +
+                        "COUNT(*), " +
+                        "SUM(CASE WHEN type = 'tshirt' then 1 else 0 END)," +
+                        "SUM(CASE WHEN type = 'pants' then 1 else 0 END)," +
+                        "SUM(CASE WHEN type = 'skirt' then 1 else 0 END)," +
+                        "SUM(CASE WHEN color = 'blue' then 1 else 0 END)," +
+                        "SUM(CASE WHEN color = 'pink' then 1 else 0 END)," +
+                        "SUM(CASE WHEN color = 'yellow' then 1 else 0 END)," +
+                "from clothes";
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        List<Integer> list = new ArrayList<>();
+
+        try{
+            conn = getConnection();
+            pstmt = conn.prepareStatement(sql);
+            rs = pstmt.executeQuery();
+
+            while(rs.next()){
+                list.add(rs.getInt(1));
+                list.add(rs.getInt(2));
+                list.add(rs.getInt(3));
+                list.add(rs.getInt(4));
+                list.add(rs.getInt(5));
+                list.add(rs.getInt(6));
+                list.add(rs.getInt(7));
+            }
+        } catch (Exception e){
+            throw new IllegalStateException(e);
+        } finally {
+            close(conn, pstmt, rs);
+        }
+        return list;
+    }
 }

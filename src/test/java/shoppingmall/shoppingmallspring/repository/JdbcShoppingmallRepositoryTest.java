@@ -8,9 +8,7 @@ import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 import shoppingmall.shoppingmallspring.domain.Cloth;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -154,5 +152,36 @@ class JdbcShoppingmallRepositoryTest {
 
         //then
         assertThat(repository.getRowLength()).isEqualTo(2);
+    }
+
+    @Test
+    void getCounts() {
+        //given
+        Cloth cloth1 = new Cloth();
+        cloth1.setType("tshirt");
+        cloth1.setColor("blue");
+        Cloth cloth2 = new Cloth();
+        cloth2.setType("tshirt");
+        cloth2.setColor("yellow");
+        Cloth cloth3 = new Cloth();
+        cloth3.setType("pants");
+        cloth3.setColor("pink");
+        Cloth cloth4 = new Cloth();
+        cloth4.setType("pants");
+        cloth4.setColor("pink");
+        Cloth cloth5 = new Cloth();
+        cloth5.setType("skirt");
+        cloth5.setColor("yellow");
+
+        //when
+        repository.save(cloth1);
+        repository.save(cloth2);
+        repository.save(cloth3);
+        repository.save(cloth4);
+        repository.save(cloth5);
+
+        //then
+        assertThat(repository.getCounts()).isEqualTo(Arrays.asList(5,2,2,1,1,2,2));
+
     }
 }

@@ -12,4 +12,5 @@ public interface ShoppingmallRepository {
     Long updateCloth(Long id, Cloth cloth);
     Optional<Cloth> deleteOneByTypeColor(String type, String color);
     Long getRowLength();
+    List<Integer> getCounts();
 }
