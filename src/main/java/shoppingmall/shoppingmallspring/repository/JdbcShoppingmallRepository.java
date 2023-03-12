@@ -112,6 +112,33 @@ public class JdbcShoppingmallRepository implements ShoppingmallRepository{
     }
 
     @Override
+    public Long updateCloth(Long id, Cloth cloth) {
+        String sql = "update Clothes set type=?, color=?, image=? where id=?";
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = getConnection();
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, cloth.getType());
+            pstmt.setString(2, cloth.getColor());
+            pstmt.setString(3, cloth.getImage());
+            pstmt.setLong(4, id);
+            pstmt.executeUpdate();
+
+        } catch (Exception e){
+            throw new IllegalStateException(e);
+        } finally {
+            close(conn, pstmt, rs);
+        }
+
+        return id;
+    }
+
+    @Override
     public Optional<Cloth> deleteOneByTypeColor(String type, String color) {
         //못 찾으면 null 반환
         String find_sql = "select * from clothes where type = ? and color = ?";

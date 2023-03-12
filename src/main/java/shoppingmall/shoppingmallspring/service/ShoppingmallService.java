@@ -51,6 +51,9 @@ public class ShoppingmallService {
     /**
      * 옷 정보 변경
      */
+    public Long updateCloth(Long id, Cloth cloth) {
+        return repository.updateCloth(id, cloth);
+    }
 
     /**
      * 선택한 옷 제거

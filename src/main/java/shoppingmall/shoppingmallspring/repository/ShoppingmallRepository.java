@@ -9,6 +9,7 @@ public interface ShoppingmallRepository {
     Cloth save(Cloth cloth);
     Optional<Cloth> findById(Long id);
     List<Cloth> findAll();
+    Long updateCloth(Long id, Cloth cloth);
     Optional<Cloth> deleteOneByTypeColor(String type, String color);
     Long getRowLength();
 }

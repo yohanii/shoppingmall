@@ -57,8 +57,20 @@ public class ShoppingmallController {
     }
 
     @PostMapping("main/delete_form")
-    public String deleteForm(@ModelAttribute Cloth cloth) throws IllegalStateException{
+    public String deleteFormDo(@ModelAttribute Cloth cloth) throws IllegalStateException{
         service.deleteCloth(cloth.getType(), cloth.getColor());
         return "shoppingmall/shoppingmall_home";
     }
+
+    @GetMapping("main/update_form")
+    public String updateForm(Model model){
+        return "shoppingmall/update_form";
+    }
+
+    @PostMapping("main/update_form")
+    public String updateFormDo(@ModelAttribute Cloth cloth) {
+        service.updateCloth(cloth.getId(), cloth);
+        return "shoppingmall/shoppingmall_home";
+    }
+
 }
