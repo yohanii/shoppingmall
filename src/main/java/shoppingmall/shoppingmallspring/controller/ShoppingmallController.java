@@ -16,6 +16,12 @@ public class ShoppingmallController {
 
     ShoppingmallService service;
 
+    @ExceptionHandler(value = IllegalStateException.class)
+    public String controllerExceptionHandler(Exception e) {
+        System.out.println(e.getMessage());
+        return "/error/404";
+    }
+
     @Autowired
     public ShoppingmallController(ShoppingmallService service) {
         this.service = service;
@@ -42,6 +48,17 @@ public class ShoppingmallController {
     @PostMapping("main/add_form")
     public String addFormDo(@ModelAttribute Cloth cloth){
         service.addCloth(cloth);
+        return "shoppingmall/shoppingmall_home";
+    }
+
+    @GetMapping("main/delete_form")
+    public String deleteForm(Model model) {
+        return "shoppingmall/delete_form";
+    }
+
+    @PostMapping("main/delete_form")
+    public String deleteForm(@ModelAttribute Cloth cloth) throws IllegalStateException{
+        service.deleteCloth(cloth.getType(), cloth.getColor());
         return "shoppingmall/shoppingmall_home";
     }
 }

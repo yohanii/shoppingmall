@@ -55,4 +55,7 @@ public class ShoppingmallService {
     /**
      * 선택한 옷 제거
      */
+    public Long deleteCloth(String type, String color) throws IllegalStateException {
+        return repository.deleteOneByTypeColor(type, color).get().getId();
+    }
 }

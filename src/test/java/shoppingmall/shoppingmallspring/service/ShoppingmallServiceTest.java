@@ -12,6 +12,8 @@ import shoppingmall.shoppingmallspring.domain.Cloth;
 import shoppingmall.shoppingmallspring.repository.JdbcShoppingmallRepository;
 import shoppingmall.shoppingmallspring.repository.ShoppingmallRepository;
 
+import java.sql.SQLException;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -72,10 +74,9 @@ class ShoppingmallServiceTest {
         cloth1.setImage("source/blue_t.png");
 
         //when
-        repository.save(cloth1);
+        Long save_id = service.addCloth(cloth1);
 
         //then
-        Long save_id = service.addCloth(cloth1);
         Cloth result = repository.findById(save_id).get();
         assertThat(result.getId()).isEqualTo(cloth1.getId());
         assertThat(result.getType()).isEqualTo(cloth1.getType());
@@ -92,5 +93,24 @@ class ShoppingmallServiceTest {
         //given
         //when
         //then
+    }
+
+    @Test
+    void deleteCloth() {
+        //given
+        Cloth cloth1 = new Cloth();
+        cloth1.setType("tshirt");
+        cloth1.setColor("blue");
+        cloth1.setGender("male");
+        cloth1.setSize("small");
+        cloth1.setImage("source/blue_t.png");
+
+        //when
+        service.addCloth(cloth1);
+        Long save_id = service.deleteCloth(cloth1.getType(), cloth1.getColor());
+
+        //then
+        IllegalStateException e = assertThrows(IllegalStateException.class, () -> repository.findById(save_id));
+        assertThat(e.getMessage()).isEqualTo("java.sql.SQLException: id로 옷 조회 실패");
     }
 }
